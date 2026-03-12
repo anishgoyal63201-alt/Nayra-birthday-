@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For Nayra Sagatni</title>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root { --primary: #ff6b6b; --env: #f39c12; --bg: #fce4ec; }
+        body { font-family: 'Poppins', sans-serif; background: var(--bg); margin: 0; height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; overflow: hidden; }
+
+        /* LIVE COUNTDOWN */
+        #live-timer {
+            position: absolute; top: 20px; text-align: center; background: white; 
+            padding: 10px 20px; border-radius: 20px; box-shadow: 0 10px 25px rgba(255, 107, 107, 0.2); 
+            border: 2px solid var(--primary); z-index: 100;
+        }
+        .timer-title { font-size: 0.65rem; font-weight: 700; color: #888; letter-spacing: 1px; margin-bottom: 5px; }
+        .clock-wrapper { display: flex; gap: 10px; }
+        .clock-unit { display: flex; flex-direction: column; align-items: center; min-width: 45px; }
+        .clock-num { font-size: 1.4rem; font-weight: 700; color: var(--primary); line-height: 1; }
+        .clock-label { font-size: 0.5rem; text-transform: uppercase; color: #aaa; }
+
+        /* ENVELOPE */
+        .envelope-wrapper { position: relative; cursor: pointer; width: 280px; height: 180px; transition: 0.6s ease; z-index: 10; margin-top: 40px; }
+        .envelope-wrapper.open { transform: translateY(180px); }
+        .env-body { position: relative; width: 280px; height: 180px; background: var(--env); border-radius: 0 0 10px 10px; z-index: 2; }
+        .env-body::before { 
+            content: ""; position: absolute; top: 0; left: 0; border-left: 140px solid transparent; 
+            border-right: 140px solid transparent; border-top: 100px solid #e67e22; 
+            transition: 0.5s ease; z-index: 4; transform-origin: top; 
+        }
+        .open .env-body::before { transform: rotateX(180deg); z-index: 0; }
+
+        /* THE CARD */
+        .card {
+            position: absolute; top: 10px; left: 10px; width: 260px; height: 160px; background: white;
+            padding: 20px; text-align: center; box-sizing: border-box; transition: 0.8s ease;
+            z-index: 1; border-radius: 10px; visibility: hidden; overflow-y: auto;
+        }
+        .open .card { visibility: visible; transform: translateY(-460px); height: 600px; width: 320px; left: -20px; z-index: 5; box-shadow: 0 15px 45px rgba(0,0,0,0.15); }
+
+        h1 { font-family: 'Dancing Script', cursive; color: var(--primary); font-size: 1.6rem; margin: 5px 0; }
+        .heartfelt { font-size: 0.8rem; color: #444; line-height: 1.5; margin: 10px 0; text-align: left; border-top: 1px solid #f0f0f0; padding-top: 10px; }
+        
+        /* BALLOON GAME */
+        .pop-zone { display: flex; gap: 10px; justify-content: center; margin: 15px 0; }
+        .b-target { width: 35px; height: 48px; border-radius: 50%; cursor: pointer; position: relative; }
+        .b-target::after { content: ''; position: absolute; bottom: -8px; left: 50%; width: 1px; height: 8px; background: #ccc; }
+        .popped { animation: pop-action 0.3s forwards; pointer-events: none; }
+        @keyframes pop-action { 50% { transform: scale(1.4); } 100% { transform: scale(0); opacity: 0; } }
+
+        #reveal-text { font-size: 1.3rem; color: var(--primary); font-weight: 700; min-height: 30px; }
+        .w-hidden { display: none; margin: 0 3px; }
+
+        .float-b { position: absolute; bottom: -100px; width: 35px; height: 50px; border-radius: 50%; animation: rise 7s linear forwards; z-index: -1; opacity: 0.5; }
+        @keyframes rise { to { transform: translateY(-120vh); } }
+    </style>
+</head>
+<body>
+
+    <div id="live-timer">
+        <div class="timer-title">COUNTDOWN TO OCT 27, 2026</div>
+        <div class="clock-wrapper">
+            <div class="clock-unit"><span class="clock-num" id="d">00</span><span class="clock-label">Days</span></div>
+            <div class="clock-unit"><span class="clock-num" id="h">00</span><span class="clock-label">Hours</span></div>
+            <div class="clock-unit"><span class="clock-num" id="m">00</span><span class="clock-label">Mins</span></div>
+            <div class="clock-unit"><span class="clock-num" id="s">00</span><span class="clock-label">Secs</span></div>
+        </div>
+    </div>
+
+    <div class="envelope-wrapper" id="envelope" onclick="openGift()">
+        <div style="position: absolute; top: -30px; width: 100%; text-align: center; color: #e67e22; font-weight: bold; font-size: 0.8rem;">Tap to Open, Nayra 🎁</div>
+        <div class="env-body"></div>
+        <div class="card">
+            <h1>Happy Birthday, Nayra Sagtani!</h1>
+            <p class="heartfelt">
+                Happy Birthday to someone who makes my life brighter every single day! 🎉<br><br>
+                Your smile brings happiness, your kindness spreads warmth, and your presence makes everything better. I’m so lucky to have you in my life.<br><br>
+                May your day be filled with love, laughter, and beautiful moments, and may the year ahead bring you endless happiness and success.<br><br>
+                Enjoy every moment of your special day. You truly deserve the best! 🎂✨
+            </p>
+            <div class="pop-zone">
+                <div class="b-target" onclick="handlePop(1, event)" style="background: #ff7675;"></div>
+                <div class="b-target" onclick="handlePop(2, event)" style="background: #74b9ff;"></div>
+                <div class="b-target" onclick="handlePop(3, event)" style="background: #55efc4;"></div>
+                <div class="b-target" onclick="handlePop(4, event)" style="background: #ffeaa7;"></div>
+            </div>
+            <div id="reveal-text">
+                <span id="word1" class="w-hidden">You</span> 
+                <span id="word2" class="w-hidden">Are</span>
+                <span id="word3" class="w-hidden">So</span> 
+                <span id="word4" class="w-hidden">Special!</span>
+            </div>
+            <p style="margin-top: 15px; font-weight: bold; color: var(--primary);">With Love ❤️</p>
+        </div>
+    </div>
+
+    <audio id="player" loop src="anishck.kr.mp3"></audio>
+
+    <script>
+        function runTimer() {
+            const target = new Date("2026-10-27T00:00:00").getTime();
+            setInterval(() => {
+                const now = new Date().getTime();
+                const diff = target - now;
+                if (diff <= 0) {
+                    document.getElementById("live-timer").innerHTML = "HAPPY BIRTHDAY!";
+                    return;
+                }
+                document.getElementById("d").innerText = Math.floor(diff / 86400000).toString().padStart(2, '0');
+                document.getElementById("h").innerText = Math.floor((diff % 86400000) / 3600000).toString().padStart(2, '0');
+                document.getElementById("m").innerText = Math.floor((diff % 3600000) / 60000).toString().padStart(2, '0');
+                document.getElementById("s").innerText = Math.floor((diff % 60000) / 1000).toString().padStart(2, '0');
+            }, 1000);
+        }
+        runTimer();
+
+        const player = document.getElementById('player');
+        let currentWord = 1;
+        
+        function openGift() {
+            const env = document.getElementById('envelope');
+            if(!env.classList.contains('open')) {
+                env.classList.add('open');
+                player.play().catch(e => console.log("Audio needs user interaction first"));
+                for(let i=0; i<30; i++) {
+                    setTimeout(() => {
+                        const b = document.createElement('div');
+                        b.className = 'float-b';
+                        b.style.left = Math.random() * 100 + 'vw';
+                        b.style.background = `hsl(${Math.random()*360}, 70%, 80%)`;
+                        document.body.appendChild(b);
+                        setTimeout(() => b.remove(), 7000);
+                    }, i * 200);
+                }
+            }
+        }
+
+        function handlePop(num, event) {
+            event.stopPropagation();
+            if(num === currentWord) {
+                event.target.classList.add('popped');
+                document.getElementById('word' + num).style.display = 'inline-block';
+                currentWord++;
+            }
+        }
+    </script>
+</body>
+</html>
